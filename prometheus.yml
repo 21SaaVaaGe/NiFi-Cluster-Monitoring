@@ -1,0 +1,21 @@
+global:
+  scrape_interval:      15s
+  evaluation_interval:  15s
+
+scrape_configs:
+  # optional: this makes the metrics available to us about Promethus itself.
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # tells Prometheus to scrape metrics an address over port 9123
+  - job_name: "statsd"
+    static_configs:
+      - targets: ["192.168.144.2:8000"]
+    metrics_path: /metrics
+    params:
+      match[]:
+        - "nifi.address.*"
+        - "nifi.status.*"
+        - "nifi.active_thread_count.*"
+        - "nifi.queued.*"
